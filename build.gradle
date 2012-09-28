@@ -1,0 +1,28 @@
+    apply plugin: 'java'
+    apply plugin: 'eclipse'
+
+    repositories {
+		mavenCentral()
+    }
+    
+    dependencies {
+    	compile 'commons-io:commons-io:2.+'
+    
+        testCompile 'junit:junit:4.+'
+    }
+    
+    compileJava {
+                    options.encoding = 'UTF-8'
+	}
+
+    // http://stackoverflow.com/questions/8343871/mark-gradle-build-unstable-in-jenkins-when-junit-tests-fail
+    test {
+       ignoreFailures = true
+       outputs.upToDateWhen { false }	// run tests even if up to date
+    }
+    
+    // http://gradle.1045684.n5.nabble.com/getting-compiler-warnings-out-of-javac-with-gradle-td4229141.html
+    tasks.withType(Compile) {
+    	options.compilerArgs << "-Xlint:unchecked"
+    	options.compilerArgs << "-Xlint:deprecation"
+	}
